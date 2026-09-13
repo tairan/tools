@@ -1,19 +1,21 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-This repository is a small browser-only Vite app for converting PDFs to JPGs locally. Keep application logic in `src/`:
+This repository is the browser-only **泰然工具箱** at `https://tools.tairan.org/`, built with Vite multi-page mode and vanilla JavaScript. The GitHub repository is `tairan/tools` (renamed from `pdf2jpg`).
 
-- `src/main.js`: UI state, DOM events, and download flow
-- `src/pdf-converter.js`: PDF.js rendering and stitch/split conversion logic
-- `src/zip-builder.js`: ZIP packaging for multi-page downloads
-- `src/style.css`: app styling
-- `src/assets/`: bundled images used by Vite
-- `public/`: static files served as-is, such as `favicon.svg`
+- `src/catalog.js`: tool metadata (`slug`, `title`, `description`) and URL convention
+- `index.html`, `src/home.js`, `src/home.css`: Chinese tool directory, with cards rendered by Vite
+- `<slug>/index.html`: independent tool HTML entry, discovered from the catalog
+- `src/tools/pdf2jpg/`: existing PDF UI, conversion, ZIP, localization, and tool styles
+- `src/shared/`: common CSS and existing browser preferences
+- `public/`: static resources
 
-Top-level config lives in `package.json`, `vite.config.js`, and `netlify.toml`.
+Keep each tool's business code isolated. The home page must not import PDF.js, its worker, or ZIP libraries. Add tools only when explicitly requested; the catalog must list working tools only. Use ordinary page navigation, with unknown paths returning 404. Do not add a catch-all SPA rewrite.
+
+Top-level configuration lives in `package.json`, `vite.config.js`, and `netlify.toml`. Local and Netlify builds use Node 22 (at least 22.13.0).
 
 ## Build, Test, and Development Commands
-- `npm install`: install dependencies
+- `npm ci`: install locked dependencies
 - `npm run dev`: start the local Vite dev server
 - `npm run build`: create a production bundle in `dist/`
 - `npm run preview`: serve the built app locally for a final smoke test
@@ -49,4 +51,4 @@ PRs should include:
 - notes on manual test cases you ran
 
 ## Deployment & Configuration Notes
-This project is configured for Netlify via `netlify.toml`. Keep processing client-side only; do not introduce server upload flows without explicitly documenting the privacy tradeoff in `README.md`.
+This project uses the existing Netlify project `pdf2jpg-privacy.netlify.app` via `netlify.toml`, with `tools.tairan.org` as its production domain. DNS remains in Cloudflare, managed using `CF_TOKEN` from the environment. Never commit credentials. Do not add old-domain 301 redirects. Keep processing client-side only; do not introduce server upload flows without explicitly documenting the privacy tradeoff in `README.md`.

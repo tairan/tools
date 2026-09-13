@@ -1,45 +1,41 @@
-# PDF → JPG
+# 泰然工具箱
 
-报销医保时需要上传 JPG，但电子发票默认是 PDF。其他在线转换工具要把文件上传到服务器，存在隐私风险——尤其是医疗发票包含个人信息。
+常用在线工具，部署于 **https://tools.tairan.org/**。博客与参考手册位于 [tairan.org](https://tairan.org/)。
 
-于是用 Vibe Coding 写了这个工具：**全程在浏览器本地运行，零上传，零服务器。**
+## 现有工具
 
-🔗 **在线使用：[pdf2jpg.tairan.org](https://pdf2jpg.tairan.org)**
+- [PDF 转 JPG](https://tools.tairan.org/pdf2jpg/)：浏览器本地转换，支持逐页 ZIP、长图拼接、清晰度、JPEG 质量和页间距设置。PDF 文件不上传；保留中文、英文、日文、德文、法文及浅色、深色、跟随系统外观。
 
----
+本次由原 `pdf2jpg` 仓库重构，保留 Git 历史。随机数和 UUID 生成等工具尚未实现。
 
-## 核心特点
+## 开发与构建
 
-- **隐私优先** — 文件只在你自己的浏览器里处理，不会离开你的设备
-- **无需安装** — 打开网页即用，无 App、无插件
-- **拼接模式** — 多页 PDF 可合并成一张长图，方便整单上传
-- **调节间距** — 页与页之间的间距可自定义（0–200px）
-- **批量下载** — 多页模式下打包成 ZIP 一键下载
-
-## 技术栈
-
-| 用途 | 库 |
-|------|-----|
-| PDF 渲染 | [PDF.js](https://mozilla.github.io/pdf.js/) |
-| 前端构建 | [Vite](https://vitejs.dev/) |
-| ZIP 打包 | [JSZip](https://stuk.github.io/jszip/) |
-| 文件下载 | [FileSaver.js](https://github.com/eligrey/FileSaver.js) |
-
-## 本地开发
+使用 Node.js 22（至少 22.13.0），版本约定见 `.nvmrc`。
 
 ```bash
-npm install
+npm ci
 npm run dev
+npm run build
+npm run preview
 ```
 
-## 构建部署
+Vite 多页构建输出到 `dist/`，首页 `/` 与 `/pdf2jpg/` 均有独立 HTML。`netlify.toml` 配置 Node 22、构建命令和发布目录。不配置全站 SPA 回退，未知路径应返回 404。
 
-```bash
-npm run build   # 输出到 dist/
-```
+## 代码组织与扩展
 
-部署到 Netlify：直接导入 GitHub 仓库，`netlify.toml` 已配置好构建命令。
+- `src/catalog.js`：工具清单，仅保存 `slug`、`title`、`description`；`getToolPath` 生成访问路径。
+- `index.html`、`src/home.*`：中文目录首页，工具卡片在开发及构建时由 Vite 注入，首页不加载 PDF 转换依赖。
+- `<slug>/index.html`：各工具的独立 HTML 入口；Vite 根据清单自动收集入口。
+- `src/tools/<slug>/`：各工具的业务代码、语言文案和专用样式。
+- `src/shared/`：共用基础样式和偏好存储；沿用原 `pdf2img:*` 存储键。
+- `public/`：静态资源。
 
----
+新增工具：在 `src/catalog.js` 添加一个条目，新建对应 `<slug>/index.html` 与 `src/tools/<slug>/` 模块，页面引入自己的模块和样式，并提供返回 `/` 的链接。不要从目录首页引入工具业务模块。运行生产构建，验证独立地址、刷新、手机布局和实际工具操作。
 
-> Vibe Coded with GitHub Copilot
+## 部署
+
+GitHub 仓库为 `tairan/tools`。沿用 Netlify 项目 `pdf2jpg-privacy.netlify.app`，构建分支为 `main`，正式域名为 `tools.tairan.org`。
+
+在 Netlify 绑定正式域名；Cloudflare 的 `tools` CNAME 指向 `pdf2jpg-privacy.netlify.app`，使用 DNS only，由 Netlify 提供 HTTPS。DNS 操作凭据通过环境变量 `CF_TOKEN` 提供，不写入仓库。
+
+不维护旧 `pdf2jpg.tairan.org` 的 301。跨域偏好不迁移，首次打开新域名使用原默认设置。软件工程定律已归入博客[手册栏目](https://tairan.org/guides/software-engineering-laws/)。

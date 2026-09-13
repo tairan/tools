@@ -19,7 +19,7 @@ import {
   saveLocalePreference,
   saveThemeModePreference,
   themeModes,
-} from './preferences.js';
+} from '../../shared/preferences.js';
 import { downloadAsZip } from './zip-builder.js';
 
 let activeLocale = DEFAULT_LOCALE;

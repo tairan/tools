@@ -14,6 +14,7 @@ let currentLocale = DEFAULT_LOCALE;
 
 const messages = {
   zh: {
+    navigation: { label: "站点导航", tools: "全部工具", blog: "泰然的博客" },
     document: { title: 'PDF 转 JPG | 本地浏览器转换' },
     toolbar: {
       theme: '外观',
@@ -89,6 +90,7 @@ const messages = {
     },
   },
   en: {
+    navigation: { label: "Site navigation", tools: "All tools", blog: "Tairan’s blog" },
     document: { title: 'PDF to JPG | Local Browser Converter' },
     toolbar: {
       theme: 'Theme',
@@ -164,6 +166,7 @@ const messages = {
     },
   },
   ja: {
+    navigation: { label: "サイトナビゲーション", tools: "すべてのツール", blog: "泰然のブログ" },
     document: { title: 'PDF から JPG | ローカル変換ツール' },
     toolbar: {
       theme: '表示',
@@ -239,6 +242,7 @@ const messages = {
     },
   },
   de: {
+    navigation: { label: "Seitennavigation", tools: "Alle Tools", blog: "Tairans Blog" },
     document: { title: 'PDF zu JPG | Lokaler Browser-Konverter' },
     toolbar: {
       theme: 'Design',
@@ -314,6 +318,7 @@ const messages = {
     },
   },
   fr: {
+    navigation: { label: "Navigation du site", tools: "Tous les outils", blog: "Blog de Tairan" },
     document: { title: 'PDF vers JPG | Convertisseur local' },
     toolbar: {
       theme: 'Apparence',

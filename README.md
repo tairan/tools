@@ -34,8 +34,8 @@ Vite 多页构建输出到 `dist/`，首页 `/` 与 `/pdf2jpg/` 均有独立 HTM
 
 ## 部署
 
-GitHub 仓库为 `tairan/tools`。沿用 Netlify 项目 `pdf2jpg-privacy.netlify.app`，构建分支为 `main`，正式域名为 `tools.tairan.org`。
+GitHub 仓库为 `tairan/tools`。沿用 Netlify 项目 `tairans-tools.netlify.app`，构建分支为 `main`，正式域名为 `tools.tairan.org`。
 
-在 Netlify 绑定正式域名；Cloudflare 的 `tools` CNAME 指向 `pdf2jpg-privacy.netlify.app`，使用 DNS only，由 Netlify 提供 HTTPS。DNS 操作凭据通过环境变量 `CF_TOKEN` 提供，不写入仓库。
+在 Netlify 绑定正式域名；Cloudflare 的 `tools` CNAME 指向 `tairans-tools.netlify.app`，使用 DNS only，由 Netlify 提供 HTTPS。DNS 操作凭据通过环境变量 `CF_TOKEN` 提供，不写入仓库。
 
 不维护旧 `pdf2jpg.tairan.org` 的 301。跨域偏好不迁移，首次打开新域名使用原默认设置。软件工程定律已归入博客[手册栏目](https://tairan.org/guides/software-engineering-laws/)。

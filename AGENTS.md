@@ -51,4 +51,4 @@ PRs should include:
 - notes on manual test cases you ran
 
 ## Deployment & Configuration Notes
-This project uses the existing Netlify project `pdf2jpg-privacy.netlify.app` via `netlify.toml`, with `tools.tairan.org` as its production domain. DNS remains in Cloudflare, managed using `CF_TOKEN` from the environment. Never commit credentials. Do not add old-domain 301 redirects. Keep processing client-side only; do not introduce server upload flows without explicitly documenting the privacy tradeoff in `README.md`.
+This project uses the existing Netlify project `tairans-tools.netlify.app` via `netlify.toml`, with `tools.tairan.org` as its production domain. DNS remains in Cloudflare, managed using `CF_TOKEN` from the environment. Never commit credentials. Do not add old-domain 301 redirects. Keep processing client-side only; do not introduce server upload flows without explicitly documenting the privacy tradeoff in `README.md`.

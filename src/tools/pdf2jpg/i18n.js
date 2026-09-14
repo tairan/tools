@@ -14,7 +14,7 @@ let currentLocale = DEFAULT_LOCALE;
 
 const messages = {
   zh: {
-    navigation: { label: "站点导航", tools: "全部工具", blog: "泰然的博客" },
+    navigation: { label: "站点导航", tools: "全部工具", blog: "太然的博客" },
     document: { title: 'PDF 转 JPG | 本地浏览器转换' },
     toolbar: {
       theme: '外观',
@@ -166,7 +166,7 @@ const messages = {
     },
   },
   ja: {
-    navigation: { label: "サイトナビゲーション", tools: "すべてのツール", blog: "泰然のブログ" },
+    navigation: { label: "サイトナビゲーション", tools: "すべてのツール", blog: "太然のブログ" },
     document: { title: 'PDF から JPG | ローカル変換ツール' },
     toolbar: {
       theme: '表示',
@@ -394,6 +394,65 @@ const messages = {
     },
   },
 };
+
+const extraMessages = {
+  "zh": {
+    "title": "PDF 转 JPG",
+    "category": "图片与文档",
+    "cancel": "取消处理",
+    "cancelled": "已取消处理，可重新选择设置后转换。",
+    "limits": "长图超过浏览器画布能力时，请降低清晰度或选择逐页导出。",
+    "password": "此 PDF 需要密码，请先在本地解除密码保护后重试。",
+    "failed": "文件读取或转换失败，请确认 PDF 完整，降低清晰度后重试。",
+    "zipFailed": "ZIP 打包失败，请重试。",
+    "ready": "下载已准备好。"
+  },
+  "en": {
+    "title": "PDF to JPG",
+    "category": "Images & documents",
+    "cancel": "Cancel",
+    "cancelled": "Cancelled. Adjust the settings and try again.",
+    "limits": "If the long image exceeds your browser’s canvas limit, lower the resolution or export separate pages.",
+    "password": "This PDF requires a password. Remove password protection locally and try again.",
+    "failed": "Could not read or convert the PDF. Check the file and try a lower resolution.",
+    "zipFailed": "Could not create the ZIP. Please try again.",
+    "ready": "Your download is ready."
+  },
+  "ja": {
+    "title": "PDF を JPG に変換",
+    "category": "画像とドキュメント",
+    "cancel": "キャンセル",
+    "cancelled": "処理をキャンセルしました。設定を変更して再試行できます。",
+    "limits": "長い画像がブラウザーの制限を超える場合は、解像度を下げるかページごとに書き出してください。",
+    "password": "パスワード付き PDF です。端末上で保護を解除して再試行してください。",
+    "failed": "PDF の読み込みまたは変換に失敗しました。ファイルを確認し、解像度を下げて再試行してください。",
+    "zipFailed": "ZIP の作成に失敗しました。再試行してください。",
+    "ready": "ダウンロードの準備ができました。"
+  },
+  "de": {
+    "title": "PDF in JPG umwandeln",
+    "category": "Bilder & Dokumente",
+    "cancel": "Abbrechen",
+    "cancelled": "Abgebrochen. Einstellungen ändern und erneut versuchen.",
+    "limits": "Bei Überschreitung der Canvas-Grenze bitte die Auflösung reduzieren oder einzelne Seiten exportieren.",
+    "password": "Diese PDF benötigt ein Passwort. Bitte den Schutz lokal entfernen und erneut versuchen.",
+    "failed": "Die PDF konnte nicht gelesen oder umgewandelt werden. Datei prüfen und Auflösung reduzieren.",
+    "zipFailed": "ZIP konnte nicht erstellt werden. Bitte erneut versuchen.",
+    "ready": "Der Download ist bereit."
+  },
+  "fr": {
+    "title": "Convertir un PDF en JPG",
+    "category": "Images et documents",
+    "cancel": "Annuler",
+    "cancelled": "Traitement annulé. Modifiez les réglages et réessayez.",
+    "limits": "Si l’image dépasse la limite du navigateur, réduisez la résolution ou exportez les pages séparément.",
+    "password": "Ce PDF nécessite un mot de passe. Supprimez la protection localement, puis réessayez.",
+    "failed": "Lecture ou conversion impossible. Vérifiez le PDF et réduisez la résolution.",
+    "zipFailed": "Création du ZIP impossible. Veuillez réessayer.",
+    "ready": "Le téléchargement est prêt."
+  }
+};
+Object.entries(extraMessages).forEach(([locale, extra]) => { messages[locale].extra = extra; });
 
 function resolveMessage(locale, key) {
   return key.split('.').reduce((value, part) => value && value[part], messages[locale]);

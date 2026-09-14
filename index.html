@@ -1,39 +1,10 @@
 <!doctype html>
-<html lang="zh-CN" data-theme="light">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>泰然工具箱 · 常用在线工具</title>
-    <meta name="description" content="泰然的常用在线工具。在浏览器里完成日常小事，PDF 转 JPG 支持本地转换、逐页导出与长图拼接。" />
-    <link rel="canonical" href="https://tools.tairan.org/" />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <script>
-      (() => {
-        let mode = 'system';
-        try { mode = localStorage.getItem('pdf2img:theme-mode') || mode; } catch {}
-        document.documentElement.dataset.theme = mode === 'dark' ||
-          (mode !== 'light' && matchMedia('(prefers-color-scheme: dark)').matches)
-          ? 'dark' : 'light';
-      })();
-    </script>
-    <link rel="stylesheet" href="/src/home.css" />
-  </head>
-  <body>
-    <header class="catalog-header">
-      <a class="site-name" href="/">泰然工具箱</a>
-      <a href="https://tairan.org/">泰然的博客 ↗</a>
-    </header>
-    <main class="catalog-main">
-      <section class="catalog-intro" aria-labelledby="page-title">
-        <p class="eyebrow">常用在线工具</p>
-        <h1 id="page-title">日常小事，<br />打开就能做。</h1>
-        <p class="intro-description">一些自己也在用的小工具，让日常操作更简单。</p>
-      </section>
-      <ul class="tool-grid" aria-label="工具列表">
-        <!-- tool-catalog -->
-      </ul>
-    </main>
-    <footer class="catalog-footer">泰然工具箱 · <a href="https://tairan.org/">tairan.org</a></footer>
-    <script type="module" src="/src/home.js"></script>
-  </body>
-</html>
+<html lang="zh-CN"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>太然工具箱 · 浏览器里的日常工具</title><meta name="description" content="随机密码、Base64、UUID、JSON、时间戳、二维码、图片与 PDF 工具。全部在浏览器中处理，输入和文件不上传。"><link rel="canonical" href="https://tools.tairan.org/"><link rel="icon" type="image/svg+xml" href="/favicon.svg"><!-- theme-boot --><link rel="stylesheet" href="/src/home.css"></head>
+<body><!-- site-header --><main id="main-content" class="catalog-main" tabindex="-1">
+<section class="catalog-intro"><div><h1>顺手的工具，<br class="mobile-break">留给需要的时候。</h1><p>从一串字符，到一份文档。在你的浏览器里完成。</p></div><p class="local-note">本地计算<br>内容不上传</p></section>
+<div class="catalog-search"><label for="tool-search">查找工具</label><input type="search" id="tool-search" placeholder="搜索名称或用途，例如：密码、JSON、图片" autocomplete="off" spellcheck="false"></div>
+<nav class="category-filters" aria-label="工具分类"><!-- category-filters --></nav><div class="catalog-count"><p id="search-status" role="status" aria-live="polite">共 11 个工具</p><button id="reset-filters" type="button" hidden>清空筛选</button></div>
+<div id="tool-directory"><!-- tool-catalog --></div><div class="empty-state" id="no-results" hidden><h2>没有找到匹配的工具</h2><p>试试更短的关键词，或清空筛选查看全部工具。</p></div>
+<noscript><p class="tool-note">可以浏览全部工具。使用工具需要启用 JavaScript。</p></noscript>
+</main><!-- site-footer --><script type="module" src="/src/home.js"></script></body></html>

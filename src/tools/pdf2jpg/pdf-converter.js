@@ -1,138 +1,90 @@
 import * as pdfjs from 'pdfjs-dist';
-
-// Point to the bundled worker via Vite's ?url import
 import pdfWorkerUrl from 'pdfjs-dist/build/pdf.worker.mjs?url';
 pdfjs.GlobalWorkerOptions.workerSrc = pdfWorkerUrl;
+// Keep loaded code available for repeated local conversions; documents still release independently.
+let sharedWorker;
+window.addEventListener('pagehide', () => { sharedWorker?.destroy(); sharedWorker = null; });
 
-/**
- * Convert every page of a PDF ArrayBuffer into JPEG Blobs.
- *
- * @param {ArrayBuffer} arrayBuffer - Raw PDF bytes
- * @param {object}      opts
- * @param {number}      opts.scale      - Render scale (1 = 72 dpi, 2 = 144 dpi). Default 2.
- * @param {number}      opts.quality    - JPEG quality 0–1. Default 0.92.
- * @param {Function}    opts.onProgress - Called with { current, total } after each page.
- * @returns {Promise<Array<{ pageNum: number, blob: Blob, objectURL: string }>>}
- */
-export async function convertPdfToJpegs(
-  arrayBuffer,
-  { scale = 2, quality = 0.92, onProgress } = {}
-) {
-  const loadingTask = pdfjs.getDocument({ data: new Uint8Array(arrayBuffer) });
-  const pdf = await loadingTask.promise;
-  const totalPages = pdf.numPages;
-  const results = [];
-
-  for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
-    const page = await pdf.getPage(pageNum);
-    const viewport = page.getViewport({ scale });
-
-    const canvas = document.createElement('canvas');
-    canvas.width = Math.round(viewport.width);
-    canvas.height = Math.round(viewport.height);
-
-    const ctx = canvas.getContext('2d');
-    await page.render({ canvasContext: ctx, viewport }).promise;
-
-    const blob = await new Promise((resolve, reject) => {
-      canvas.toBlob(
-        (b) => (b ? resolve(b) : reject(new Error(`Canvas toBlob failed on page ${pageNum}`))),
-        'image/jpeg',
-        quality
-      );
-    });
-
-    const objectURL = URL.createObjectURL(blob);
-
-    // Release page resources immediately to keep memory low
-    page.cleanup();
-    // Detach canvas so the browser can GC it
-    canvas.width = 0;
-    canvas.height = 0;
-
-    results.push({ pageNum, blob, objectURL });
-    onProgress?.({ current: pageNum, total: totalPages });
+function validateCanvas(width, height) {
+  if (!Number.isFinite(width) || !Number.isFinite(height) || width < 1 || height < 1 || width > 32767 || height > 32767 || width * height > 64 * 1024 * 1024) {
+    const error = new Error('Canvas limit exceeded'); error.code = 'CANVAS_LIMIT'; throw error;
   }
-
-  await pdf.destroy();
-  return results;
 }
-
-/**
- * Render all pages and stitch them vertically into a single JPEG Blob.
- *
- * @param {ArrayBuffer} arrayBuffer
- * @param {object}      opts
- * @param {number}      opts.scale      - Render scale. Default 2.
- * @param {number}      opts.quality    - JPEG quality 0–1. Default 0.92.
- * @param {number}      opts.gap        - Pixel gap between pages. Default 0.
- * @param {Function}    opts.onProgress - Called with { current, total }.
- * @returns {Promise<{ blob: Blob, objectURL: string, totalPages: number }>}
- */
-export async function stitchPdfToJpeg(
-  arrayBuffer,
-  { scale = 2, quality = 0.92, gap = 0, onProgress } = {}
-) {
-  const loadingTask = pdfjs.getDocument({ data: new Uint8Array(arrayBuffer) });
-  const pdf = await loadingTask.promise;
-  const totalPages = pdf.numPages;
-
-  const pageImages = [];
-  let totalHeight = 0;
-  let maxWidth = 0;
-
-  for (let pageNum = 1; pageNum <= totalPages; pageNum++) {
-    const page = await pdf.getPage(pageNum);
-    const viewport = page.getViewport({ scale });
-    const w = Math.round(viewport.width);
-    const h = Math.round(viewport.height);
-
-    const offscreen = new OffscreenCanvas(w, h);
-    const offCtx = offscreen.getContext('2d');
-    await page.render({ canvasContext: offCtx, viewport }).promise;
-
-    const bitmap = await createImageBitmap(offscreen);
-    pageImages.push({ bitmap, w, h });
-    totalHeight += h;
-    if (w > maxWidth) maxWidth = w;
-
-    page.cleanup();
-    onProgress?.({ current: pageNum, total: totalPages });
-  }
-
-  await pdf.destroy();
-
-  const totalGapHeight = gap * Math.max(0, totalPages - 1);
-  const stitchCanvas = document.createElement('canvas');
-  stitchCanvas.width  = maxWidth;
-  stitchCanvas.height = totalHeight + totalGapHeight;
-
-  const ctx = stitchCanvas.getContext('2d');
-  // Fill entire canvas with gap color (warm gray) — gap strips keep this color
-  ctx.fillStyle = '#b0aaa0';
-  ctx.fillRect(0, 0, stitchCanvas.width, stitchCanvas.height);
-
-  let yOffset = 0;
-  for (const { bitmap, w, h } of pageImages) {
-    // White background per page row (also handles transparent PDFs)
-    ctx.fillStyle = '#ffffff';
-    ctx.fillRect(0, yOffset, stitchCanvas.width, h);
-    const xOffset = Math.floor((maxWidth - w) / 2);
-    ctx.drawImage(bitmap, xOffset, yOffset);
-    bitmap.close();
-    yOffset += h + gap;
-  }
-
-  const blob = await new Promise((resolve, reject) => {
-    stitchCanvas.toBlob(
-      (b) => (b ? resolve(b) : reject(new Error('Canvas toBlob failed during stitch'))),
-      'image/jpeg',
-      quality
-    );
+function createCanvas(width, height) {
+  validateCanvas(width, height);
+  const canvas = document.createElement('canvas'); canvas.width = width; canvas.height = height;
+  return canvas;
+}
+function jpegBlob(canvas, quality) {
+  return new Promise((resolve, reject) => canvas.toBlob((blob) => {
+    if (blob) resolve(blob);
+    else { const error = new Error('Canvas export failed'); error.code = 'CANVAS_LIMIT'; reject(error); }
+  }, 'image/jpeg', quality));
+}
+async function withPdf(arrayBuffer, signal, run) {
+  signal?.throwIfAborted();
+  sharedWorker ??= new pdfjs.PDFWorker();
+  const loadingTask = pdfjs.getDocument({ worker: sharedWorker, data: new Uint8Array(arrayBuffer), isEvalSupported: false, enableScripting: false, enableXfa: false, useSystemFonts: true, cMapUrl: '/pdf-assets/cmaps/', cMapPacked: true, standardFontDataUrl: '/pdf-assets/standard_fonts/', wasmUrl: '/pdf-assets/wasm/' });
+  let destroyed;
+  const destroy = () => { destroyed ??= loadingTask.destroy().catch(() => {}); return destroyed; };
+  const abort = () => { void destroy(); };
+  signal?.addEventListener('abort', abort, { once: true });
+  try { return await run(await loadingTask.promise); }
+  finally { signal?.removeEventListener('abort', abort); await destroy(); }
+}
+async function renderPage(page, scale, signal) {
+  signal?.throwIfAborted();
+  const viewport = page.getViewport({ scale });
+  const canvas = createCanvas(Math.round(viewport.width), Math.round(viewport.height));
+  const context = canvas.getContext('2d');
+  if (!context) { canvas.width = 0; const error = new Error('Canvas unavailable'); error.code = 'CANVAS_LIMIT'; throw error; }
+  let render;
+  const abort = () => render?.cancel();
+  try {
+    render = page.render({ canvas, canvasContext: context, viewport, background: '#ffffff' });
+    signal?.addEventListener('abort', abort, { once: true });
+    await render.promise; signal?.throwIfAborted(); return canvas;
+  } catch (error) { canvas.width = 0; canvas.height = 0; throw error; }
+  finally { signal?.removeEventListener('abort', abort); page.cleanup(); }
+}
+export async function convertPdfToJpegs(arrayBuffer, { scale = 2, quality = 0.92, onProgress, signal } = {}) {
+  return withPdf(arrayBuffer, signal, async (pdf) => {
+    const results = [];
+    for (let pageNum = 1; pageNum <= pdf.numPages; pageNum++) {
+      signal?.throwIfAborted();
+      const canvas = await renderPage(await pdf.getPage(pageNum), scale, signal);
+      try { results.push({ pageNum, blob: await jpegBlob(canvas, quality) }); }
+      finally { canvas.width = 0; canvas.height = 0; }
+      onProgress?.({ current: pageNum, total: pdf.numPages });
+    }
+    return results;
   });
-
-  stitchCanvas.width = 0;
-  stitchCanvas.height = 0;
-
-  return { blob, objectURL: URL.createObjectURL(blob), totalPages };
+}
+export async function stitchPdfToJpeg(arrayBuffer, { scale = 2, quality = 0.92, gap = 0, onProgress, signal } = {}) {
+  return withPdf(arrayBuffer, signal, async (pdf) => {
+    let width = 0, height = gap * Math.max(0, pdf.numPages - 1);
+    for (let i = 1; i <= pdf.numPages; i++) {
+      signal?.throwIfAborted();
+      const page = await pdf.getPage(i), viewport = page.getViewport({ scale });
+      width = Math.max(width, Math.round(viewport.width)); height += Math.round(viewport.height); page.cleanup();
+      validateCanvas(width, height);
+    }
+    const stitched = createCanvas(width, height), context = stitched.getContext('2d');
+    try {
+      if (!context) { const error = new Error('Canvas unavailable'); error.code = 'CANVAS_LIMIT'; throw error; }
+      context.fillStyle = '#b0aaa0'; context.fillRect(0, 0, width, height);
+      let y = 0;
+      for (let i = 1; i <= pdf.numPages; i++) {
+        signal?.throwIfAborted();
+        const canvas = await renderPage(await pdf.getPage(i), scale, signal);
+        try {
+          context.fillStyle = '#ffffff'; context.fillRect(0, y, width, canvas.height);
+          context.drawImage(canvas, Math.floor((width - canvas.width) / 2), y); y += canvas.height + gap;
+        } finally { canvas.width = 0; canvas.height = 0; }
+        onProgress?.({ current: i, total: pdf.numPages });
+      }
+      signal?.throwIfAborted();
+      return { blob: await jpegBlob(stitched, quality), totalPages: pdf.numPages };
+    } finally { stitched.width = 0; stitched.height = 0; }
+  });
 }

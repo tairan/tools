@@ -1,0 +1,4 @@
+import { select, button, textInput, output, cancel, notice, note } from '../../../build/fields.js';
+export default function hashWorkspace() {
+  return `<div class="tool-options">${select('hash-source', '输入来源', [['text', '文本'], ['file', '本地文件']])}${select('algorithm', '算法', [['SHA-256', 'SHA-256'], ['SHA-512', 'SHA-512'], ['MD5', 'MD5 · 兼容校验'], ['SHA-1', 'SHA-1 · 兼容校验']])}<div class="actions">${button('calculate', '计算哈希', 'class="primary"')}${cancel}</div></div><div class="editors"><div><div id="hash-text">${textInput('输入文本；空文本也有对应的哈希值', 8)}</div><section id="hash-file" class="file-zone" hidden><label for="file-input">选择本地文件</label><input type="file" id="file-input"><p id="file-info">文件分块读取，不上传。</p>${button('clear-file', '清除文件')}</section></div>${output(8)}</div><progress id="progress" max="100" value="0" hidden aria-label="计算进度"></progress>${notice}${note('默认 SHA-256。MD5 与 SHA-1 用于兼容已有校验值；普通哈希不用于存储密码。')}`;
+}

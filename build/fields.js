@@ -1,0 +1,11 @@
+import { escapeHtml } from './pages.js';
+export const button = (id, label, attrs = '') => `<button type="button" id="${id}" ${attrs}>${label}</button>`;
+export const select = (id, label, options, attrs = '') => `<label class="field" for="${id}"><span>${label}</span><select id="${id}" ${attrs}>${options.map(([value, title, selected]) => `<option value="${value}"${selected ? ' selected' : ''}>${title}</option>`).join('')}</select></label>`;
+export const number = (id, label, value, min, max) => `<label class="field" for="${id}"><span>${label}</span><input id="${id}" type="number" value="${value}" min="${min}" max="${max}" step="1" required></label>`;
+export const checkbox = (id, label, checked = true) => `<label class="check"><input id="${id}" type="checkbox"${checked ? ' checked' : ''}>${label}</label>`;
+export const output = (rows = 12) => `<section class="editor"><div class="editor-heading"><label for="output">结果</label><div class="button-group">${button('copy', '复制', 'data-result-action disabled')}${button('download', '下载', 'data-result-action disabled')}</div></div><textarea id="output" rows="${rows}" readonly spellcheck="false" placeholder="处理结果将显示在这里" aria-describedby="tool-status"></textarea></section>`;
+export const textInput = (placeholder = '在此输入或粘贴文本', rows = 12) => `<section class="editor"><div class="editor-heading"><label for="input">输入</label>${button('clear', '清空')}</div><textarea id="input" rows="${rows}" spellcheck="false" autocapitalize="off" autocomplete="off" placeholder="${escapeHtml(placeholder)}" aria-describedby="tool-status"></textarea></section>`;
+export const cancel = button('cancel', '取消处理', 'hidden');
+export const notice = '<p id="tool-status" class="status" role="status" aria-live="polite" aria-atomic="true"></p>';
+export const action = (value, title, primary = false) => `<button type="button" data-action="${value}"${primary ? ' class="primary"' : ''}>${title}</button>`;
+export const note = (text) => `<p class="tool-note">${text}</p>`;

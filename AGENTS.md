@@ -1,11 +1,13 @@
 # Repository Guidelines
 
 ## Project Structure & Module Organization
-This repository is the browser-only **泰然工具箱** at `https://tools.tairan.org/`, built with Vite multi-page mode and vanilla JavaScript. The GitHub repository is `tairan/tools` (renamed from `pdf2jpg`).
+This repository is the browser-only **太然工具箱** at `https://tools.tairan.org/`, built with Vite multi-page mode and vanilla JavaScript. The GitHub repository is `tairan/tools` (renamed from `pdf2jpg`).
 
-- `src/catalog.js`: tool metadata (`slug`, `title`, `description`) and URL convention
+- `src/catalog.js`: tool metadata (`slug`, `title`, `description`, `categoryId`, `keywords`, `order`) and URL convention
 - `index.html`, `src/home.js`, `src/home.css`: Chinese tool directory, with cards rendered by Vite
 - `<slug>/index.html`: independent tool HTML entry, discovered from the catalog
+- `src/tools/<slug>/`: per-tool build template, browser controller and pure business logic
+- `build/`: shared build-time HTML primitives; heavy tool dependencies stay isolated
 - `src/tools/pdf2jpg/`: existing PDF UI, conversion, ZIP, localization, and tool styles
 - `src/shared/`: common CSS and existing browser preferences
 - `public/`: static resources
@@ -32,7 +34,7 @@ Use ES modules, vanilla JavaScript, and 2-space indentation. Prefer small, singl
 No formatter or linter is configured yet, so keep style consistent with existing files and avoid large unrelated refactors.
 
 ## Testing Guidelines
-There is no automated test suite configured today. Validate changes with:
+Run the Node unit suite (`npm test`) and Chromium, Firefox, WebKit integration suite (`npm run test:browser`) for affected behavior. Browser tests target the production preview; build first. Install Playwright browsers and host dependencies once. Validate changes with:
 
 - `npm run dev` for interactive testing in the browser
 - `npm run build` to verify the production bundle

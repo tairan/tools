@@ -1,0 +1,253 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-09-14T20:18:59.272860+00:00",
+  "title": "Design System: 太然工具箱",
+  "extensions": {
+    "colorMeta": {
+      "accent": {
+        "role": "primary",
+        "displayName": "accent"
+      },
+      "accent-strong": {
+        "role": "primary",
+        "displayName": "accent-strong"
+      },
+      "accent-soft": {
+        "role": "primary",
+        "displayName": "accent-soft"
+      },
+      "bg": {
+        "role": "neutral",
+        "displayName": "bg"
+      },
+      "surface": {
+        "role": "neutral",
+        "displayName": "surface"
+      },
+      "surface-alt": {
+        "role": "neutral",
+        "displayName": "surface-alt"
+      },
+      "border": {
+        "role": "neutral",
+        "displayName": "border"
+      },
+      "border-strong": {
+        "role": "neutral",
+        "displayName": "border-strong"
+      },
+      "text": {
+        "role": "neutral",
+        "displayName": "text"
+      },
+      "text-muted": {
+        "role": "neutral",
+        "displayName": "text-muted"
+      },
+      "danger": {
+        "role": "semantic",
+        "displayName": "danger"
+      },
+      "success": {
+        "role": "semantic",
+        "displayName": "success"
+      },
+      "dark-accent": {
+        "role": "primary",
+        "displayName": "dark-accent"
+      },
+      "dark-accent-strong": {
+        "role": "primary",
+        "displayName": "dark-accent-strong"
+      },
+      "dark-accent-soft": {
+        "role": "primary",
+        "displayName": "dark-accent-soft"
+      },
+      "dark-bg": {
+        "role": "neutral",
+        "displayName": "dark-bg"
+      },
+      "dark-surface": {
+        "role": "neutral",
+        "displayName": "dark-surface"
+      },
+      "dark-surface-alt": {
+        "role": "neutral",
+        "displayName": "dark-surface-alt"
+      },
+      "dark-border": {
+        "role": "neutral",
+        "displayName": "dark-border"
+      },
+      "dark-border-strong": {
+        "role": "neutral",
+        "displayName": "dark-border-strong"
+      },
+      "dark-text": {
+        "role": "neutral",
+        "displayName": "dark-text"
+      },
+      "dark-text-muted": {
+        "role": "neutral",
+        "displayName": "dark-text-muted"
+      },
+      "dark-danger": {
+        "role": "semantic",
+        "displayName": "dark-danger"
+      },
+      "dark-success": {
+        "role": "semantic",
+        "displayName": "dark-success"
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "display",
+        "purpose": "目录引言"
+      },
+      "brand": {
+        "displayName": "brand",
+        "purpose": "太然品牌"
+      },
+      "headline": {
+        "displayName": "headline",
+        "purpose": "工具页标题"
+      },
+      "section-title": {
+        "displayName": "section-title",
+        "purpose": "工作区二级标题"
+      },
+      "body": {
+        "displayName": "body",
+        "purpose": "常规正文与按钮"
+      },
+      "label": {
+        "displayName": "label",
+        "purpose": "表单标签"
+      },
+      "caption": {
+        "displayName": "caption",
+        "purpose": "解释与导航辅助文字"
+      },
+      "data": {
+        "displayName": "data",
+        "purpose": "数据输入输出"
+      }
+    },
+    "shadows": [],
+    "motion": [
+      {
+        "name": "control-state",
+        "value": "background .18s ease, border-color .18s ease",
+        "purpose": "按钮状态过渡"
+      },
+      {
+        "name": "entry-arrow",
+        "value": "transform .18s ease",
+        "purpose": "目录悬停箭头水平移动 3px"
+      },
+      {
+        "name": "reduced-motion",
+        "value": "transition: none !important; scroll-behavior: auto !important",
+        "purpose": "响应 prefers-reduced-motion: reduce"
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "compact",
+        "value": "800px"
+      },
+      {
+        "name": "mobile",
+        "value": "640px"
+      }
+    ]
+  },
+  "components": [
+    {
+      "name": "主按钮",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "运行当前工具。",
+      "html": "<button class=\"ds-control ds-primary\">生成</button>",
+      "css": ".ds-control{font:16px/1.65 var(--font-body);min-height:44px;padding:8px 16px;border:1px solid var(--border-strong);border-radius:4px;background:var(--surface);color:var(--text);cursor:pointer;transition:background .18s ease,border-color .18s ease}.ds-control:hover:not(:disabled){background:var(--surface-alt);border-color:var(--accent)}.ds-control:active:not(:disabled){background:var(--accent-soft)}.ds-control:disabled{color:var(--text-muted);opacity:.55;cursor:not-allowed}.ds-control:focus-visible{outline:2px solid var(--accent);outline-offset:4px}@media(prefers-reduced-motion:reduce){.ds-control{transition:none}}.ds-primary{background:var(--accent-strong);border-color:var(--accent-strong);color:var(--bg)}.ds-primary:hover:not(:disabled){background:var(--accent);border-color:var(--accent)}"
+    },
+    {
+      "name": "次按钮",
+      "kind": "button",
+      "refersTo": "button-secondary",
+      "description": "复制、清空及辅助操作。",
+      "html": "<button class=\"ds-control\">复制结果</button>",
+      "css": ".ds-control{font:16px/1.65 var(--font-body);min-height:44px;padding:8px 16px;border:1px solid var(--border-strong);border-radius:4px;background:var(--surface);color:var(--text);cursor:pointer;transition:background .18s ease,border-color .18s ease}.ds-control:hover:not(:disabled){background:var(--surface-alt);border-color:var(--accent)}.ds-control:active:not(:disabled){background:var(--accent-soft)}.ds-control:disabled{color:var(--text-muted);opacity:.55;cursor:not-allowed}.ds-control:focus-visible{outline:2px solid var(--accent);outline-offset:4px}@media(prefers-reduced-motion:reduce){.ds-control{transition:none}}"
+    },
+    {
+      "name": "文本字段",
+      "kind": "input",
+      "refersTo": "input",
+      "description": "带可见标签的原生输入。",
+      "html": "<label class=\"ds-field\">输入内容<input class=\"ds-control\" placeholder=\"请输入内容\"></label>",
+      "css": ".ds-field{display:flex;flex-direction:column;gap:8px;font:14px/1.65 var(--font-body);color:var(--text-muted)}.ds-control{font:16px/1.65 var(--font-body);min-height:44px;padding:8px 12px;border:1px solid var(--border-strong);border-radius:4px;background:var(--surface);color:var(--text);min-width:0;max-width:100%;caret-color:var(--accent)}.ds-control::placeholder{color:var(--text-muted);opacity:1}.ds-control:focus-visible{outline:2px solid var(--accent);outline-offset:4px}"
+    },
+    {
+      "name": "分类导航",
+      "kind": "nav",
+      "refersTo": "category-navigation",
+      "description": "带当前项底线的文字链接。",
+      "html": "<nav class=\"ds-nav\" aria-label=\"工具分类\"><a href=\"#all\" aria-current=\"true\">全部工具 <span>11</span></a><a href=\"#text\">文本处理</a></nav>",
+      "css": ".ds-nav{display:flex;flex-wrap:wrap;gap:8px 24px;border-bottom:1px solid var(--border);font:14px/1.65 var(--font-body)}.ds-nav a{display:inline-flex;align-items:center;gap:8px;min-height:48px;color:var(--text-muted);text-decoration:none;border-bottom:2px solid transparent}.ds-nav a[aria-current]{color:var(--accent-strong);border-color:var(--accent)}.ds-nav a:hover{color:var(--accent-strong)}.ds-nav span{font-size:12px}.ds-nav a:focus-visible{outline:2px solid var(--accent);outline-offset:4px}"
+    },
+    {
+      "name": "工具入口",
+      "kind": "card",
+      "refersTo": "catalog-entry",
+      "description": "平面目录条目，保留实际箭头形状。",
+      "html": "<a class=\"ds-entry\" href=\"/json/\"><span class=\"ds-heading\">JSON 格式化<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" aria-hidden=\"true\"><path d=\"M4 12h15m-6-6 6 6-6 6\"/></svg></span><span class=\"ds-description\">格式化、压缩与校验 JSON。</span></a>",
+      "css": ".ds-entry{display:flex;flex-direction:column;padding:4px 0 14px;color:var(--text);font:16px/1.65 var(--font-body);text-decoration:none;border-bottom:1px solid var(--border)}.ds-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;font-weight:500}.ds-heading svg{width:20px;height:20px;flex-shrink:0;color:var(--accent);transition:transform .18s ease}.ds-description{font-size:13px;line-height:1.8;color:var(--text-muted);margin-top:8px}.ds-entry:hover .ds-heading{color:var(--accent-strong)}.ds-entry:hover svg{transform:translateX(3px)}.ds-entry:focus-visible{outline:2px solid var(--accent);outline-offset:4px}@media(prefers-reduced-motion:reduce){.ds-heading svg{transition:none}}"
+    },
+    {
+      "name": "设置面板",
+      "kind": "custom",
+      "refersTo": "settings-panel",
+      "description": "承载成组设置的平面容器。",
+      "html": "<section class=\"ds-settings\"><h2>生成设置</h2><p>设置长度与数量后生成。</p></section>",
+      "css": ".ds-settings{padding:24px;background:var(--surface-alt);border-radius:8px;color:var(--text);font:16px/1.65 var(--font-body)}.ds-settings h2{margin:0 0 24px;font-size:19px;font-weight:600;line-height:1.5}.ds-settings p{margin:0}@media(max-width:640px){.ds-settings{padding:20px}}"
+    },
+    {
+      "name": "文件选择区",
+      "kind": "custom",
+      "refersTo": "file-zone",
+      "description": "虚线边框原生文件入口。",
+      "html": "<section class=\"ds-file\"><label for=\"ds-files\">选择图片，或将图片拖到这里</label><input id=\"ds-files\" type=\"file\" accept=\"image/jpeg,image/png,image/webp\" multiple></section>",
+      "css": ".ds-file{padding:24px;border:1px dashed var(--border-strong);border-radius:8px;background:var(--surface-alt);color:var(--text);font:16px/1.65 var(--font-body)}.ds-file label{display:block;font-size:17px;margin-bottom:16px}.ds-file input{width:100%;max-width:100%;font:14px/1.65 var(--font-body);color:var(--text);min-height:44px;border:1px solid var(--border-strong);border-radius:4px;padding:8px 12px;background:var(--surface)}.ds-file input::file-selector-button{font:inherit;margin-right:12px;padding:8px 12px;border:1px solid var(--border-strong);border-radius:4px;color:var(--text);background:var(--surface-alt);cursor:pointer}.ds-file input:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.ds-file[data-dragging=\"true\"]{border-color:var(--accent);background:var(--accent-soft)}"
+    }
+  ],
+  "narrative": {
+    "northStar": "沉静文气，清晰和效率为先",
+    "overview": "沿用已确认的「沉静文气，清晰和效率为先」方向。方庭 SVG、太然字样与景泰蓝构成品牌识别；宋体只承担品牌和目录引言，操作区域采用熟悉的系统控件与等宽数据。\n\n界面以细分隔线、低饱和背景和清楚的输入／结果层级组织任务。本文记录完成后的实现，不提出新的视觉方向；页面策略与质量约定仍以 `.impeccable/surfaces/tools.md` 为准。",
+    "keyCharacteristics": [
+      "文气品牌，常规操作。",
+      "平面细线与克制蓝色。",
+      "浅深主题和完整手机工作区。"
+    ],
+    "rules": [
+      {
+        "name": "字体分工规则",
+        "body": "宋体传达身份；系统字体承载操作；等宽字体承载待处理内容与结果。",
+        "section": "typography"
+      }
+    ],
+    "dos": [
+      "Do 保留太然名称、方庭 SVG 和已确认的景泰蓝品牌。",
+      "Do 让操作标题、标签和按钮使用系统无衬线字体，数据使用等宽字体。",
+      "Do 保留可见标签、键盘焦点、跳转正文链接和明确的结果反馈。",
+      "Do 使用语义主题变量，检查浅深主题与窄屏下的可读性。"
+    ],
+    "donts": [
+      "Don’t 把品牌宋体扩展到输入框、操作标签和数据。",
+      "Don’t 添加渐变、装饰网格或加载表演。",
+      "Don’t 用浮起的营销卡片替换当前平面工具入口。",
+      "Don’t 隐藏手机的核心操作或用颜色作为错误的唯一提示。"
+    ]
+  }
+}

@@ -25,3 +25,6 @@ dist-ssr
 
 # Codex
 .codex
+.impeccable/review/
+test-results/
+playwright-report/

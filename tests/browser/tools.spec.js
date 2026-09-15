@@ -140,7 +140,7 @@ test('PDF exports actual multipage JPG ZIP and stitched image; languages survive
   await page.locator('#btn-reset').click(); await page.locator('#file-input').setInputFiles(fixture); await page.locator('#opt-stitch').check(); await page.locator('#btn-convert').click(); await expect(page.locator('#section-results')).toBeVisible();
   promise = page.waitForEvent('download'); await page.locator('#btn-download').click();
   const stitched = await inspectImage(page, await readFile(await (await promise).path())); expect(stitched.width).toBe(600); expect(stitched.height).toBe(840);
-  for (const [locale, lang] of [['en', 'en'], ['ja', 'ja-JP'], ['de', 'de'], ['fr', 'fr'], ['zh', 'zh-CN']]) { await page.locator('#locale-select').selectOption(locale); await expect(page.locator('html')).toHaveAttribute('lang', lang); }
+  for (const [locale, lang] of [['en', 'en'], ['ja', 'ja-JP'], ['zh', 'zh-CN']]) { await page.locator('#locale-select').selectOption(locale); await expect(page.locator('html')).toHaveAttribute('lang', lang); }
   await page.locator('#locale-select').selectOption('en'); await page.reload(); await expect(page.locator('#locale-select')).toHaveValue('en'); await expect(page.locator('h1')).toHaveText('PDF to JPG');
 });
 

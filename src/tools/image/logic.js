@@ -23,7 +23,8 @@ export async function resizeImage(file, { type = 'image/webp', quality = 0.8, lo
   if (!Number.isFinite(quality) || quality < 0.1 || quality > 1) throw new Error('质量请输入 10%–100%。');
   let bitmap, canvas;
   try {
-    bitmap = await decodeImage(file);
+    try { bitmap = await decodeImage(file); }
+    catch { throw new Error('图片无法解码，请确认文件没有损坏。'); }
     const dimensions = targetSize(bitmap.width || bitmap.naturalWidth, bitmap.height || bitmap.naturalHeight, longest);
     canvas = typeof OffscreenCanvas === 'function' ? new OffscreenCanvas(dimensions.width, dimensions.height) : document.createElement('canvas');
     canvas.width = dimensions.width; canvas.height = dimensions.height;

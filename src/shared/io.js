@@ -1,3 +1,4 @@
+import { setText } from './i18n.js';
 export const MAX_TEXT_BYTES = 5 * 1024 * 1024;
 export function checkText(text) {
   if (new TextEncoder().encode(text).byteLength > MAX_TEXT_BYTES) throw new Error('文本超过 5 MiB，请分段处理。');
@@ -6,7 +7,7 @@ export function checkText(text) {
 export function status(message = '', error = false) {
   const target = document.querySelector('#tool-status');
   if (!target) return;
-  target.textContent = message;
+  setText(target, message);
   target.dataset.state = error ? 'error' : 'info';
 }
 export async function copyText(text) {

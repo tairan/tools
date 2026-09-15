@@ -23,9 +23,9 @@ export function dateToTimestamp(value, zone = 'local') {
   if (actual.some((part, i) => part !== expected[i])) throw new Error('日期无效，或当地夏令时跳转使此时间不存在。请修正日期或使用 UTC。');
   return date;
 }
-export function describeDate(date) {
+export function describeDate(date, translate = (value) => value) {
   const offset = -date.getTimezoneOffset();
   const sign = offset < 0 ? '-' : '+';
   const zone = `UTC${sign}${String(Math.floor(Math.abs(offset) / 60)).padStart(2, '0')}:${String(Math.abs(offset) % 60).padStart(2, '0')}`;
-  return `秒：${Math.floor(date.getTime() / 1000)}\n毫秒：${date.getTime()}\nUTC：${date.toISOString()}\n本地：${localDateValue(date)} ${zone}\n时区：${Intl.DateTimeFormat().resolvedOptions().timeZone}`;
+  return `${translate('秒')}：${Math.floor(date.getTime() / 1000)}\n${translate('毫秒')}：${date.getTime()}\nUTC：${date.toISOString()}\n${translate('本地')}：${localDateValue(date)} ${zone}\n${translate('时区')}：${Intl.DateTimeFormat().resolvedOptions().timeZone}`;
 }

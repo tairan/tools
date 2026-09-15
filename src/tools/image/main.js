@@ -1,3 +1,4 @@
+import { setText } from '../../shared/i18n.js';
 import '../../shared/shell.js';
 import { resizeImage } from './logic.js';
 import { downloadBlob, formatBytes, makeZip, nextFrame, status } from '../../shared/io.js';
@@ -22,7 +23,7 @@ function showFiles() {
     const image = document.createElement('img'); image.alt = file.name;
     const url = URL.createObjectURL(file); urls.push(url); image.src = url;
     const copy = document.createElement('div'); const title = document.createElement('h3'); title.textContent = file.name;
-    const detail = document.createElement('p'); detail.textContent = `${formatBytes(file.size)} · 等待处理`;
+    const detail = document.createElement('p'); setText(detail, '{size} · 等待处理', { size: formatBytes(file.size) });
     copy.append(title, detail); item.append(image, copy); list.append(item);
   });
 }
@@ -71,11 +72,11 @@ process.addEventListener('click', async () => {
       results.push({ name, blob: result.blob });
       const url = URL.createObjectURL(result.blob); urls.push(url); row.querySelector('img').src = url;
       const change = file.size ? (result.blob.size - file.size) / file.size * 100 : 0;
-      row.querySelector('p').textContent = `${result.width} × ${result.height} · ${formatBytes(file.size)} → ${formatBytes(result.blob.size)}（${change <= 0 ? '减少' : '增加'} ${Math.abs(change).toFixed(1)}%）`;
-      const download = document.createElement('button'); download.type = 'button'; download.textContent = '下载图片'; download.addEventListener('click', () => downloadBlob(result.blob, name)); row.append(download);
+      setText(row.querySelector('p'), change <= 0 ? '{dimensions} · {before} → {after}（减少 {percent}%）' : '{dimensions} · {before} → {after}（增加 {percent}%）', { dimensions: `${result.width} × ${result.height}`, before: formatBytes(file.size), after: formatBytes(result.blob.size), percent: Math.abs(change).toFixed(1) });
+      const download = document.createElement('button'); download.type = 'button'; setText(download, '下载图片'); download.addEventListener('click', () => downloadBlob(result.blob, name)); row.append(download);
     } catch (error) {
       if (current !== revision) return;
-      failed++; row.querySelector('p').textContent = error.message || '图片无法解码，请确认文件没有损坏。'; row.querySelector('p').className = 'error';
+      failed++; setText(row.querySelector('p'), error.message || '图片无法解码，请确认文件没有损坏。'); row.querySelector('p').className = 'error';
     }
     progress.value = (i + 1) / files.length * 100;
   }
@@ -98,6 +99,6 @@ document.querySelectorAll('#image-format,#image-quality,#image-width').forEach((
   stop(); showFiles(); status();
   const png = document.querySelector('#image-format').value === 'image/png';
   document.querySelector('#image-quality').disabled = png;
-  document.querySelector('#quality-value').textContent = png ? '无损' : `${document.querySelector('#image-quality').value}%`;
+  setText(document.querySelector('#quality-value'), png ? '无损' : '{value}%', { value: document.querySelector('#image-quality').value });
 }));
 window.addEventListener('pagehide', () => { stop(); worker?.terminate(); worker = null; clearResults(); files = []; fileInput.value = ''; });

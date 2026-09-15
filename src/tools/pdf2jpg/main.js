@@ -1,12 +1,15 @@
-import { DEFAULT_LOCALE, applyTranslations, getHtmlLang, getIntlLocale, getLocaleLabel, setLocale, supportedLocales, t } from './i18n.js';
-import { applyThemeMode, createSystemThemeListener, loadPreferences, saveLocalePreference, saveThemeModePreference, themeModes } from '../../shared/preferences.js';
+import { initI18n, getLocale as getSharedLocale, t as translateShared } from '../../shared/i18n.js';
+import { DEFAULT_LOCALE, applyTranslations, getHtmlLang, getIntlLocale, setLocale, t } from './i18n.js';
+import { applyThemeMode, createSystemThemeListener, loadPreferences, saveThemeModePreference, themeModes } from '../../shared/preferences.js';
 import { downloadBlob, makeZip } from '../../shared/io.js';
 const find = (id) => document.getElementById(id);
 const fileInput = find('file-input'), status = find('tool-status');
 let currentFile = null, result = null, controller = null, revision = 0, urls = [], currentSection = 'upload', progressState = null, packing = false;
 const preferences = loadPreferences(DEFAULT_LOCALE);
-let locale = setLocale(preferences.locale), theme = preferences.themeMode;
-function message(key, error = false, params = {}) { status.textContent = key ? t(key, params) : ''; status.dataset.state = error ? 'error' : 'info'; }
+initI18n();
+let locale = setLocale(getSharedLocale()), theme = preferences.themeMode;
+let currentMessage = ['', false, {}];
+function message(key, error = false, params = {}) { currentMessage = [key, error, params]; status.textContent = key ? t(key, params) : ''; status.dataset.state = error ? 'error' : 'info'; }
 function show(section) { currentSection = section; ['upload','options','progress','results'].forEach((id) => { find(`section-${id}`).hidden = id !== section; }); }
 function release() { urls.forEach((url) => URL.revokeObjectURL(url)); urls = []; result = null; find('thumbnail-grid').replaceChildren(); find('stitch-img').removeAttribute('src'); }
 function stop() { revision++; controller?.abort(); controller = null; packing = false; find('zip-cancel').hidden = true; find('btn-download').disabled = false; }
@@ -27,16 +30,15 @@ function renderProgress() {
   find('progress-page-info').textContent = progressState ? `${t('format.counter', { current: progressState.current, total: progressState.total })} · ${t('progress.renderingPage', { page: progressState.current })}` : t('progress.readingFile');
 }
 function translate() {
-  setLocale(locale); document.documentElement.lang = getHtmlLang(locale); document.title = `${t('extra.title')} · 太然工具箱`;
+  setLocale(locale); document.documentElement.lang = getHtmlLang(locale); document.title = `${t('extra.title')} · ${translateShared('太然工具箱')}`;
   applyTranslations();
   find('theme-mode-select').replaceChildren(...themeModes.map((mode) => { const option = document.createElement('option'); option.value = mode; option.textContent = t(`toolbar.themeModes.${mode}`); return option; }));
   find('theme-mode-select').value = theme;
   find('locale-select').value = locale;
   if (currentFile) find('info-size').textContent = `${new Intl.NumberFormat(getIntlLocale(locale), { maximumFractionDigits: 2 }).format(currentFile.size / 1024)} KiB`;
-  renderOptions(); renderProgress(); renderResult(); message('');
+  renderOptions(); renderProgress(); renderResult(); message(...currentMessage);
 }
-find('locale-select').replaceChildren(...supportedLocales.map((code) => { const option = document.createElement('option'); option.value = code; option.textContent = getLocaleLabel(code); return option; }));
-find('locale-select').addEventListener('change', () => { locale = setLocale(find('locale-select').value); saveLocalePreference(locale); translate(); });
+window.addEventListener('localechange', () => { locale = setLocale(getSharedLocale()); translate(); });
 find('theme-mode-select').addEventListener('change', () => { theme = find('theme-mode-select').value; saveThemeModePreference(theme); applyThemeMode(theme); });
 const detach = createSystemThemeListener(() => { if (theme === 'system') applyThemeMode(theme); });
 applyThemeMode(theme);

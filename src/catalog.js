@@ -1,3 +1,4 @@
+import { t } from './shared/i18n.js';
 export const categories = [
   { id: 'generate', title: '生成与校验', description: '生成标识，校验内容。' },
   { id: 'encoding', title: '编码与数据', description: '让数据换一种表达。' },
@@ -24,7 +25,8 @@ export const getCategoryTools = (id) => tools.filter((tool) => tool.categoryId =
 export function matchesSearch(tool, query) {
   const normalize = (text) => text.normalize('NFKC').toLocaleLowerCase('zh-CN');
   const terms = normalize(query).trim().split(/\s+/).filter(Boolean);
-  const haystack = normalize([tool.title, tool.description, tool.slug, ...tool.keywords].join(' '));
+  const translated = ['en', 'ja'].flatMap((locale) => [t(tool.title, {}, locale), t(tool.description, {}, locale)]);
+  const haystack = normalize([tool.title, tool.description, tool.slug, ...tool.keywords, ...translated].join(' '));
   return terms.every((term) => haystack.includes(term));
 }
 export function validateCatalog(catalog = tools, groups = categories) {

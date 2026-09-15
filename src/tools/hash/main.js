@@ -1,3 +1,4 @@
+import { setText } from '../../shared/i18n.js';
 import '../../shared/shell.js';
 import { createTaskClient } from '../../shared/worker-client.js';
 import { copyText, downloadText, checkText, formatBytes, status } from '../../shared/io.js';
@@ -17,7 +18,7 @@ function invalidate() {
 source.addEventListener('change', () => { invalidate(); document.querySelector('#hash-text').hidden = source.value !== 'text'; document.querySelector('#hash-file').hidden = source.value !== 'file'; });
 input.addEventListener('input', invalidate);
 document.querySelector('#algorithm').addEventListener('change', invalidate);
-fileInput.addEventListener('change', () => { invalidate(); const file = fileInput.files[0]; document.querySelector('#file-info').textContent = file ? `${file.name} · ${formatBytes(file.size)}` : '文件分块读取，不上传。'; });
+fileInput.addEventListener('change', () => { invalidate(); const file = fileInput.files[0]; if (file) setText(document.querySelector('#file-info'), '{name} · {size}', { name: file.name, size: formatBytes(file.size) }); else setText(document.querySelector('#file-info'), '文件分块读取，不上传。'); });
 document.querySelector('#calculate').addEventListener('click', async () => {
   invalidate(); const current = revision;
   try {

@@ -1,3 +1,4 @@
+import { setText } from './shared/i18n.js';
 import './shared/shell.js';
 import { categories, tools, matchesSearch } from './catalog.js';
 const input = document.querySelector('#tool-search');
@@ -9,7 +10,7 @@ function update() {
   document.querySelectorAll('[data-tool]').forEach((item) => { item.hidden = !slugs.has(item.dataset.tool); });
   document.querySelectorAll('.category-group').forEach((group) => { group.hidden = !matching.some((tool) => tool.categoryId === group.id); });
   document.querySelectorAll('[data-category]').forEach((link) => { if (link.dataset.category === category) link.setAttribute('aria-current', 'true'); else link.removeAttribute('aria-current'); });
-  document.querySelector('#search-status').textContent = `共 ${matching.length} 个工具`;
+  setText(document.querySelector('#search-status'), '共 {count} 个工具', { count: matching.length });
   document.querySelector('#no-results').hidden = matching.length !== 0;
   reset.hidden = !input.value && category === 'all';
 }
@@ -22,3 +23,5 @@ input.addEventListener('input', update);
 reset.addEventListener('click', () => { category = 'all'; input.value = ''; history.replaceState(null, '', location.pathname); update(); input.focus(); });
 window.addEventListener('hashchange', () => { category = categories.some((group) => `#${group.id}` === location.hash) ? location.hash.slice(1) : 'all'; update(); });
 update();
+
+window.addEventListener('localechange', update);

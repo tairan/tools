@@ -6,3 +6,10 @@
 @media(max-width:800px){.header-inner,.site-footer,.tool-main,.catalog-main{padding-inline:24px}.generator-layout{gap:24px;grid-template-columns:1fr 1fr}.header-controls{gap:16px}.checks{grid-template-columns:1fr}}
 @media(max-width:640px){.header-inner,.site-footer,.tool-main,.catalog-main{padding-inline:20px}.header-inner{min-height:80px;gap:12px;flex-wrap:wrap;padding-block:16px}.brand{font-size:23px}.brand-suffix{margin-left:7px;font-size:13px}.brand svg{width:38px;height:38px}.header-controls{gap:12px}.blog-link{display:none}.field-inline>span{font-size:12px}.field-inline select{max-width:112px}.tool-main{padding-top:22px;padding-bottom:40px}h1{font-size:26px}.tool-title{margin-bottom:24px}.editors,.generator-layout,.time-forms{grid-template-columns:1fr;gap:24px}textarea{font-size:16px;min-height:220px;height:240px}.tool-options{gap:16px}.tool-options .field{flex:1 1 130px}.actions{gap:8px}.actions button{padding-inline:12px;font-size:14px}.settings{padding:20px}.checks{grid-template-columns:1fr 1fr}.site-footer{gap:8px 16px}.site-footer>span:nth-child(2){order:3;width:100%}.related{margin-top:40px}.related-links{gap:8px 24px}.image-item{grid-template-columns:72px minmax(0,1fr);gap:12px}.image-item img{width:72px;height:64px}.image-item button{grid-column:2;justify-self:start}.qr-result{min-height:320px}}
 @media(prefers-reduced-motion:reduce){*,*::before,*::after{transition:none!important;scroll-behavior:auto!important}}
+
+/* Let translated labels wrap within narrow toolbars and settings panels. */
+.header-controls { flex-wrap: wrap; }
+.header-controls .field-inline { min-width: 0; }
+.header-controls select { max-width: 100%; }
+.tool-title h1, .card-heading, .field, button { overflow-wrap: anywhere; }
+html[lang="ja-JP"] body { font-family: 'Hiragino Kaku Gothic ProN', 'Yu Gothic', 'Noto Sans CJK JP', sans-serif; }

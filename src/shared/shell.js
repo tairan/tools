@@ -1,3 +1,5 @@
+import { initI18n } from './i18n.js';
+initI18n();
 import { applyThemeMode, createSystemThemeListener, loadPreferences, saveThemeModePreference } from './preferences.js';
 const selector = document.querySelector('#theme-mode');
 let { themeMode } = loadPreferences();

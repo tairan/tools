@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-14T20:18:59.272860+00:00",
+  "generatedAt": "2026-09-14T21:07:38.834872+00:00",
   "title": "Design System: 太然工具箱",
   "extensions": {
     "colorMeta": {
@@ -120,7 +120,7 @@
       },
       "body": {
         "displayName": "body",
-        "purpose": "常规正文与按钮"
+        "purpose": "常规正文与按钮；日文正文使用本地日文字体，品牌继续保留宋体。"
       },
       "label": {
         "displayName": "label",
@@ -171,7 +171,7 @@
       "refersTo": "button-primary",
       "description": "运行当前工具。",
       "html": "<button class=\"ds-control ds-primary\">生成</button>",
-      "css": ".ds-control{font:16px/1.65 var(--font-body);min-height:44px;padding:8px 16px;border:1px solid var(--border-strong);border-radius:4px;background:var(--surface);color:var(--text);cursor:pointer;transition:background .18s ease,border-color .18s ease}.ds-control:hover:not(:disabled){background:var(--surface-alt);border-color:var(--accent)}.ds-control:active:not(:disabled){background:var(--accent-soft)}.ds-control:disabled{color:var(--text-muted);opacity:.55;cursor:not-allowed}.ds-control:focus-visible{outline:2px solid var(--accent);outline-offset:4px}@media(prefers-reduced-motion:reduce){.ds-control{transition:none}}.ds-primary{background:var(--accent-strong);border-color:var(--accent-strong);color:var(--bg)}.ds-primary:hover:not(:disabled){background:var(--accent);border-color:var(--accent)}"
+      "css": ".ds-control{font:16px/1.65 var(--font-body);min-height:44px;padding:8px 16px;border:1px solid var(--border-strong);border-radius:4px;background:var(--surface);color:var(--text);cursor:pointer;transition:background .18s ease,border-color .18s ease}.ds-control:hover:not(:disabled){background:var(--surface-alt);border-color:var(--accent)}.ds-control:active:not(:disabled){background:var(--accent-soft)}.ds-control:disabled{color:var(--text-muted);opacity:.55;cursor:not-allowed}.ds-control:focus-visible{outline:2px solid var(--accent);outline-offset:4px}@media(prefers-reduced-motion:reduce){.ds-control{transition:none}}.ds-primary{background:var(--accent-strong);border-color:var(--accent-strong);color:var(--bg)}.ds-primary:hover:not(:disabled){background:var(--accent);border-color:var(--accent)}.ds-control{overflow-wrap:anywhere}"
     },
     {
       "name": "次按钮",
@@ -179,7 +179,7 @@
       "refersTo": "button-secondary",
       "description": "复制、清空及辅助操作。",
       "html": "<button class=\"ds-control\">复制结果</button>",
-      "css": ".ds-control{font:16px/1.65 var(--font-body);min-height:44px;padding:8px 16px;border:1px solid var(--border-strong);border-radius:4px;background:var(--surface);color:var(--text);cursor:pointer;transition:background .18s ease,border-color .18s ease}.ds-control:hover:not(:disabled){background:var(--surface-alt);border-color:var(--accent)}.ds-control:active:not(:disabled){background:var(--accent-soft)}.ds-control:disabled{color:var(--text-muted);opacity:.55;cursor:not-allowed}.ds-control:focus-visible{outline:2px solid var(--accent);outline-offset:4px}@media(prefers-reduced-motion:reduce){.ds-control{transition:none}}"
+      "css": ".ds-control{font:16px/1.65 var(--font-body);min-height:44px;padding:8px 16px;border:1px solid var(--border-strong);border-radius:4px;background:var(--surface);color:var(--text);cursor:pointer;transition:background .18s ease,border-color .18s ease}.ds-control:hover:not(:disabled){background:var(--surface-alt);border-color:var(--accent)}.ds-control:active:not(:disabled){background:var(--accent-soft)}.ds-control:disabled{color:var(--text-muted);opacity:.55;cursor:not-allowed}.ds-control:focus-visible{outline:2px solid var(--accent);outline-offset:4px}@media(prefers-reduced-motion:reduce){.ds-control{transition:none}}.ds-control{overflow-wrap:anywhere}"
     },
     {
       "name": "文本字段",
@@ -187,7 +187,7 @@
       "refersTo": "input",
       "description": "带可见标签的原生输入。",
       "html": "<label class=\"ds-field\">输入内容<input class=\"ds-control\" placeholder=\"请输入内容\"></label>",
-      "css": ".ds-field{display:flex;flex-direction:column;gap:8px;font:14px/1.65 var(--font-body);color:var(--text-muted)}.ds-control{font:16px/1.65 var(--font-body);min-height:44px;padding:8px 12px;border:1px solid var(--border-strong);border-radius:4px;background:var(--surface);color:var(--text);min-width:0;max-width:100%;caret-color:var(--accent)}.ds-control::placeholder{color:var(--text-muted);opacity:1}.ds-control:focus-visible{outline:2px solid var(--accent);outline-offset:4px}"
+      "css": ".ds-field{display:flex;flex-direction:column;gap:8px;font:14px/1.65 var(--font-body);color:var(--text-muted)}.ds-control{font:16px/1.65 var(--font-body);min-height:44px;padding:8px 12px;border:1px solid var(--border-strong);border-radius:4px;background:var(--surface);color:var(--text);min-width:0;max-width:100%;caret-color:var(--accent)}.ds-control::placeholder{color:var(--text-muted);opacity:1}.ds-control:focus-visible{outline:2px solid var(--accent);outline-offset:4px}.ds-control{overflow-wrap:anywhere}"
     },
     {
       "name": "分类导航",
@@ -203,7 +203,7 @@
       "refersTo": "catalog-entry",
       "description": "平面目录条目，保留实际箭头形状。",
       "html": "<a class=\"ds-entry\" href=\"/json/\"><span class=\"ds-heading\">JSON 格式化<svg viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.5\" aria-hidden=\"true\"><path d=\"M4 12h15m-6-6 6 6-6 6\"/></svg></span><span class=\"ds-description\">格式化、压缩与校验 JSON。</span></a>",
-      "css": ".ds-entry{display:flex;flex-direction:column;padding:4px 0 14px;color:var(--text);font:16px/1.65 var(--font-body);text-decoration:none;border-bottom:1px solid var(--border)}.ds-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;font-weight:500}.ds-heading svg{width:20px;height:20px;flex-shrink:0;color:var(--accent);transition:transform .18s ease}.ds-description{font-size:13px;line-height:1.8;color:var(--text-muted);margin-top:8px}.ds-entry:hover .ds-heading{color:var(--accent-strong)}.ds-entry:hover svg{transform:translateX(3px)}.ds-entry:focus-visible{outline:2px solid var(--accent);outline-offset:4px}@media(prefers-reduced-motion:reduce){.ds-heading svg{transition:none}}"
+      "css": ".ds-entry{display:flex;flex-direction:column;padding:4px 0 14px;color:var(--text);font:16px/1.65 var(--font-body);text-decoration:none;border-bottom:1px solid var(--border)}.ds-heading{display:flex;align-items:center;justify-content:space-between;gap:16px;font-weight:500}.ds-heading svg{width:20px;height:20px;flex-shrink:0;color:var(--accent);transition:transform .18s ease}.ds-description{font-size:13px;line-height:1.8;color:var(--text-muted);margin-top:8px}.ds-entry:hover .ds-heading{color:var(--accent-strong)}.ds-entry:hover svg{transform:translateX(3px)}.ds-entry:focus-visible{outline:2px solid var(--accent);outline-offset:4px}@media(prefers-reduced-motion:reduce){.ds-heading svg{transition:none}}.ds-heading{overflow-wrap:anywhere}"
     },
     {
       "name": "设置面板",
@@ -235,6 +235,16 @@
         "name": "字体分工规则",
         "body": "宋体传达身份；系统字体承载操作；等宽字体承载待处理内容与结果。",
         "section": "typography"
+      },
+      {
+        "name": "日文正文",
+        "body": "日文界面的正文使用本地字体 Hiragino Kaku Gothic ProN、Yu Gothic、Noto Sans CJK JP、sans-serif，品牌继续保留宋体。",
+        "section": "typography"
+      },
+      {
+        "name": "全站语言选择",
+        "body": "页头提供简体中文、English、日本語选择。语言切换保留当前操作状态，控件按译文长度自然换行。",
+        "section": "components"
       }
     ],
     "dos": [

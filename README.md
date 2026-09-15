@@ -12,13 +12,21 @@
 | 时间与日期 | [时间戳转换](https://tools.tairan.org/timestamp/) |
 | 图片与文档 | [二维码](https://tools.tairan.org/qrcode/)、[图片压缩与缩放](https://tools.tairan.org/image/)、[PDF 转 JPG](https://tools.tairan.org/pdf2jpg/) |
 
-新增 10 个工具，另保留 PDF 转 JPG，共 11 个。目录和新增工具使用中文；PDF 保留中、英、日、德、法。品牌统一为太然、方庭标志和景泰蓝。
+新增 10 个工具，另保留 PDF 转 JPG，共 11 个。目录及全部工具统一支持简体中文、英语和日文。品牌统一为太然、方庭标志和景泰蓝。
 
 选型依据和后续候选见 [调研记录](docs/tool-research.md)。
 
+## 多语言
+
+所有页面均可通过页头切换简体中文、English、日本語。优先使用已保存的语言，否则按浏览器语言列表选择；无法匹配时使用简体中文。兼容此前 PDF 保存的 `zh`、`en`、`ja` 偏好，其他语言值按浏览器语言回退。禁用存储时仍能切换当前页面的语言。
+
+切换不刷新页面，保留输入、文件、结果及进行中的任务。界面、标题、页面说明、辅助标签、状态与错误信息随语言更新，搜索同时匹配三种语言。关闭 JavaScript 时保留中文静态目录；语言选择和工具计算需要 JavaScript。
+
+共享实现位于 `src/shared/i18n.js`，译文位于 `src/shared/locales/messages.js`，以中文原文为键。初始 HTML 的文本和辅助属性在启动时绑定，不扫描用户输入或动态结果。新增静态文案时补齐两种译文；动态界面使用 `setText(element, source, params)` 或共享 `status()`，使已有提示可在语言切换后更新。文件名、输入和计算结果作为参数或数据传递，不作为翻译键。Worker 保留源语言错误，由界面按当前语言翻译；新增参数化错误需登记对应模板。PDF 的专用词条保留在工具内，共用全站语言偏好与入口。
+
 ## 本地处理与限制
 
-输入、文件和结果只存在于当前页面内存，不上传、不写入日志、URL、localStorage 或 sessionStorage。主题和 PDF 语言沿用 `pdf2img:theme-mode`、`pdf2img:locale` 两个非内容偏好键。没有 GTM、第三方字体或远程工具 API；PDF 字体、字符映射和 WASM 随构建发布。复制仅由用户按钮触发。
+输入、文件和结果只存在于当前页面内存，不上传、不写入日志、URL、localStorage 或 sessionStorage。主题和全站语言沿用 `pdf2img:theme-mode`、`pdf2img:locale` 两个非内容偏好键。没有 GTM、第三方字体或远程工具 API；PDF 字体、字符映射和 WASM 随构建发布。复制仅由用户按钮触发。
 
 页面所需资源加载完成后可以断网计算；首版没有 Service Worker，不承诺断网首次打开、离线刷新或安装。工具仅从自身域名加载资源。
 

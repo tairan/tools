@@ -1,9 +1,9 @@
 export const DEFAULT_LOCALE = 'zh';
 
-export const supportedLocales = ['zh', 'en', 'ja', 'de', 'fr'];
+export const supportedLocales = ['zh', 'en', 'ja'];
 
 const localeMeta = {
-  zh: { htmlLang: 'zh-CN', intlLocale: 'zh-CN', label: '中文' },
+  zh: { htmlLang: 'zh-CN', intlLocale: 'zh-CN', label: '简体中文' },
   en: { htmlLang: 'en', intlLocale: 'en-US', label: 'English' },
   ja: { htmlLang: 'ja-JP', intlLocale: 'ja-JP', label: '日本語' },
   de: { htmlLang: 'de', intlLocale: 'de-DE', label: 'Deutsch' },
